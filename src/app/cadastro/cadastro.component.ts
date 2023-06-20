@@ -1,7 +1,7 @@
 import { Router } from "@angular/router";
 import { Component, OnInit } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-// import { map } from "rxjs/operators";
+import { ConsultaCepService } from "../services/consulta-cep.service";
+import { NgForm } from "@angular/forms";
 
 @Component({
   selector: "app-cadastro",
@@ -9,8 +9,8 @@ import { HttpClient } from "@angular/common/http";
   styleUrls: ["./cadastro.component.css"],
 })
 export class CadastroComponent implements OnInit {
-  
-  constructor(private router: Router, private http: HttpClient) {}
+
+  constructor(private router: Router, private service:ConsultaCepService) {}
 
   ngOnInit(): void {}
 
@@ -18,20 +18,33 @@ export class CadastroComponent implements OnInit {
     return form.valid ? this.router.navigate(['sucesso']) : alert('Formulário inválido');
   }
 
-  // consultaCEP(cep: any, form: any) {
-  //   cep = cep.value.replace(/\D/g, "");
-  //   if (cep != "") {
-  //     var validaCEP = /^[0-9]{8}$/;
-  //     if (validaCEP.test(cep)) {
-  //       this.http
-  //         .get(`https://viacep.com.br/ws/${cep}/json/`)
-  //         .subscribe((dados) => this.populaDadosForms(dados, form));
-  //     }
+  consultaCEP(e: any, form: NgForm){
+    const CEP = e.target.value;
+    if(CEP != '')
+    {
+      this.service.getConsultaCep(CEP).subscribe(result => {
+        this.populandoEndereco(result, form);
+      })
+    }
+  }
+
+  populandoEndereco(dados: any, form: NgForm){
+    form.form.patchValue({
+      endereco: dados.logradouro,
+      complemento: dados.complemento,
+      bairro: dados.bairro,
+      cidade: dados.localidade,
+      estado: dados.uf
+    })
+  }
+  
+  // formatarCEP(cep: string): string{
+  //   cep = cep.replace(/\D/g, '');
+
+  //   if(cep.length > 5){
+  //     cep = cep.substring(0,5) + '-' + cep.substring(5);
   //   }
-  // }
-  // populaDadosForms(dados:any, form: any){
-  //   form.setValue({
-  //     nome: null, email: null, endereco: {rua: dados.logradouro,cep:dados.cep , numero: dados,complemento:dados.complemento , bairro: dados.bairro, cidade: dados.cidade, estado:dados.estado }
-  //   })
+
+  //   return cep;
   // }
 }

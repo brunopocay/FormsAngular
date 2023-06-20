@@ -20,7 +20,7 @@ export class MaiorIdadeDirective implements Validator {
     const atual = new Date().getFullYear();
 
     const result = idadeAtual <= atual;
-    return result ? null: {'maiorIdadeValidator': true};
+    return result ? null : {'maiorIdadeValidator': true};
     
   }
   

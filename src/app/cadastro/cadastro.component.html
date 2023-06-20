@@ -45,37 +45,59 @@
 
     <div class="formulario__campo">
       <label class="campo__etiqueta" for="cep">CEP</label>
-      <input type="text" class="campo__escrita" name="cep" />  
+      <input type="text" class="campo__escrita" name="cep" appValidandoCep (blur)="consultaCEP($event, form)" ngModel required #cep="ngModel" pattern="^(\d{5})(-?\d{3})$" minlength="8" maxlength="9"/>  
+    </div>
+    <div *ngIf="(cep?.invalid && cep?.touched) || cep?.dirty">
+        <app-mensagem *ngIf="cep?.errors?.['required']" mensagem="Campo CEP deve ser preenchido"></app-mensagem>
+        <app-mensagem *ngIf="cep?.errors?.['pattern']" mensagem="Campo CEP deve seguir o seguinte padrão : 00000-000"></app-mensagem>
+        <app-mensagem *ngIf="cep?.errors?.['validadorCep']" mensagem="CEP informado não existe"></app-mensagem>
     </div>
 
     
     <div class="formulario__campo">
       <label class="campo__etiqueta" for="endereco">Endereço</label>
-      <input name="endereco" id="endereco" class="campo__escrita"  />
+      <input name="endereco" id="endereco" class="campo__escrita" ngModel #endereco="ngModel" required />
     </div>
+    <div *ngIf="(endereco?.invalid && endereco?.touched) || endereco?.dirty">
+      <app-mensagem *ngIf="endereco?.errors?.['required']" mensagem="Campo endereço deve ser preenchido"></app-mensagem>
+    </div>
+
     <div class="formulario__dupla">
       <div class="formulario__campo">
         <label class="campo__etiqueta" for="numero">Numero</label>
-        <input name="numero" id="numero" class="campo__escrita"  />
+        <input name="numero" id="numero" class="campo__escrita" ngModel #numero="ngModel" required />
       </div>
       <div class="formulario__campo">
         <label class="campo__etiqueta" for="complemento">Complemento</label>
-        <input name="complemento" id="complemento" class="campo__escrita" />
+        <input name="complemento" id="complemento" class="campo__escrita" ngModel #complemento="ngModel" />
       </div>
+      <div *ngIf="(complemento?.invalid && complemento?.touched) || complemento?.dirty">
+      </div>    
     </div>
+    <div *ngIf="(numero?.invalid && numero?.touched) || numero?.dirty">
+      <app-mensagem *ngIf="numero?.errors?.['required']" mensagem="Campo numero deve ser preenchido"></app-mensagem>
+    </div>
+
     <div class="formulario__campo">
       <label class="campo__etiqueta" for="bairro">Bairro</label>
-      <input name="bairro" id="bairro" class="campo__escrita"  />
+      <input name="bairro" id="bairro" class="campo__escrita"  ngModel #bairro="ngModel" required />
     </div>
+    <div *ngIf="(bairro?.invalid && bairro?.touched) || bairro?.dirty">
+      <app-mensagem *ngIf="bairro?.errors?.['required']" mensagem="Campo bairro deve ser preenchido"></app-mensagem>
+    </div>
+
     <div class="formulario__dupla">
       <div class="formulario__campo">
         <label class="campo__etiqueta" for="cidade">Cidade</label>
-        <input name="cidade" id="cidade" class="campo__escrita"  />
+        <input name="cidade" id="cidade" class="campo__escrita" ngModel #cidade="ngModel" required />
+      </div>
+      <div *ngIf="(cidade?.invalid && cidade?.touched) || cidade?.dirty">
+        <app-mensagem *ngIf="cidade?.errors?.['required']" mensagem="Campo endereço deve ser preenchido"></app-mensagem>
       </div>
 
       <div class="formulario__campo">
         <label class="campo__etiqueta" for="estado">UF</label>
-        <select id="estado" name="estado" class="campo__escrita">
+        <select id="estado" name="estado" class="campo__escrita" ngModel #uf="ngModel" required>
           <option value="AC">Acre</option>
           <option value="AL">Alagoas</option>
           <option value="AP">Amapá</option>
@@ -105,6 +127,9 @@
           <option value="TO">Tocantins</option>
           <option value="EX">Estrangeiro</option>
         </select>
+      </div>
+      <div *ngIf="(uf?.invalid && uf?.touched) || uf?.dirty">
+        <app-mensagem *ngIf="uf?.errors?.['required']" mensagem="Campo UF obrigatório"></app-mensagem>
       </div>
 
     </div>
